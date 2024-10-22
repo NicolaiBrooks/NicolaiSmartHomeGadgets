@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+#header {
+    background-color: #962500;
+    padding: 15px;
+    text-align: center;
+    color: white;
+}
+
+#navbar {
+    list-style: none;
+    padding: 0;
+}
+
+#navbar li {
+    display: inline;
+    margin: 0 15px;
+}
+
+#navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Checkout Table */
+#checkout-table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#checkout-table th, 
+#checkout-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#checkout-table th {
+    background-color: #962500;
+    color: white;
+}
+
+#totals {
+    text-align: center;
+    margin-top: 20px;
+}
+
+h3 {
+    margin: 10px 0;
+}
+
+/* Button Styles */
+button {
+    background-color: #962500;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #7b1e00; /* Darker shade for hover effect */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #checkout-table {
+        width: 100%;
+    }
+
+    #navbar li {
+        display: block;
+        margin: 10px 0;
+    }
+}

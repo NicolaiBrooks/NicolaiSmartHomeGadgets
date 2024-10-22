@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form in HTML</title>
+    <link rel="stylesheet" href="Login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+<div class = "banner">
+    <div class = "wrapper">
+        <form action = "">
+            <h1>Login</h1>
+            <div class = "input-box">
+                <input type = "text" placeholder = "Username" required>
+                <i class='bx bxs-user' ></i>
+            </div>
+            
+            <div class = "input-box">
+                <input type = "password" placeholder = "Password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+
+            <div class = "remember-forgot">
+                <label><input type = "checkbox">Remember me</label>
+                <a href = "#">Forgot password?</a>
+            </div>
+
+            <button type = "submit" class = "btn">Login</button>
+
+            <div class = "register-link">
+                <p>Don't have an account? <a href = "Signup.html">Register</a></p>
+            </div>
+
+            
+        </form>
+    </div>
+</div>
+<script>
+    let attempts = 0;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const usernameInput = form.querySelector('input[type="text"]');
+        const passwordInput = form.querySelector('input[type="password"]');
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            // Simple validation
+            if (username === "" || password === "") {
+                alert("Please fill in both fields.");
+                return;
+            }
+
+            // Retrieve stored credentials from local storage
+            const storedUsername = localStorage.getItem("username");
+            const storedPassword = localStorage.getItem("password");
+
+            // Check credentials
+            if (username === storedUsername && password === storedPassword) {
+                // Redirect to products page on successful login
+                window.location.href = "product.html";
+            } else {
+                attempts++;
+                alert("Invalid username or password. Attempt " + attempts + " of 3.");
+
+                // Check if attempts exceed 3
+                if (attempts >= 3) {
+                    // Redirect to error page after 3 failed attempts
+                    window.location.href = "error.html";
+                }
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

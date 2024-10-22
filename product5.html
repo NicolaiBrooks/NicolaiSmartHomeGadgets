@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Gadgets - Smart Camera</title>
+    <link rel="stylesheet" href="product.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <section id="header">
+        <i class='bx bx-color' style='color:#962500'></i>
+        <div>
+            <ul id="navbar">
+                <li><a class="active" href="product.html">Products</a></li>
+                <li><a href="aboutus.html">About us</a></li>
+                <li><a href="cart.html"><i class='bx bx-cart'></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="prodetails" section-p1>
+        <div class="single-pro-image">
+            <img src="Assets/camera.jpg"600px" height="600px" id="MainImg" alt="Coffee Maker">
+        </div>
+
+        <div class="single-pro-details">
+            <h6>Home / Smart Camera</h6>
+            <h4>Smart Camera</h4>
+            <h2>$120.00</h2>
+            <input type="number" id="quantity" value="1">
+            <button onclick="addToCart('Smart Camera', 120, 'Assets/camera.jpg')"><span></span>Add to Cart</button>
+            <h4>Product Details</h4>
+
+            <div>
+            <span>Enhance your home security with the SecureView Smart Camera, the all-in-one solution for peace of mind. 
+                This compact yet powerful camera delivers crystal-clear 1080p HD video, allowing you to monitor your home day or 
+                night. With its motion detection, night vision, and two-way audio, you can stay connected and aware no matter where 
+                you are.</span>
+            </div>
+        </div>
+    </section>
+    <script>
+        function addToCart(name, price, image) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const existingItem = cartItems.find(item => item.name === name);
+
+    if (existingItem) {
+        existingItem.quantity += quantity;
+    } else {
+        cartItems.push({ name, price, quantity, image });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    alert(`${name} added to cart!`);
+}
+
+    </script>
+</body>
+</html>
+
+

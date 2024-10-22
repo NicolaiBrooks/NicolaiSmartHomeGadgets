@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Gadgets - Checkout</title>
+    <link rel="stylesheet" href="checkout.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <section id="header">
+        <i class='bx bx-color' style='color:#962500'></i>
+        <div>
+            <ul id="navbar">
+                <li><a href="product.html">Products</a></li>
+                <li><a href="aboutus.html">About us</a></li>
+                <li><a href="cart.html"><i class='bx bx-cart'></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>Checkout</h2>
+        
+        <table id="checkout-table">
+            <tr>
+                <th>PRODUCT</th>
+                <th>PRICE</th>
+                <th>QUANTITY</th>
+                <th>SUBTOTAL</th>
+            </tr>
+        </table>
+
+        <div id="totals">
+            <h3>Total Discount: $<span id="discount">0.00</span></h3>
+            <h3>Subtotal: $<span id="subtotal">0.00</span></h3>
+            <h3>Tax (16.5%): $<span id="tax">0.00</span></h3>
+            <h3>Total: $<span id="total">0.00</span></h3>
+        </div>
+
+        <a href = "product.html"><button onclick="completePurchase()">Complete Purchase</button></a>
+    </section>
+
+    <script>
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const checkoutTable = document.getElementById('checkout-table');
+        const subtotalElement = document.getElementById('subtotal');
+        const taxElement = document.getElementById('tax');
+        const totalElement = document.getElementById('total');
+        const discountElement = document.getElementById('discount');
+
+        // Retrieving the discount amount from localStorage if it is available, if not then default to 0
+        let discountAmount = parseFloat(localStorage.getItem('discount')) || 0;
+
+        function calculateTotals() {
+            let subtotal = 0;
+            checkoutTable.innerHTML = `
+                <tr>
+                    <th>PRODUCT</th>
+                    <th>PRICE</th>
+                    <th>QUANTITY</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+            `; // Reseting the table for re-calculation
+
+            cartItems.forEach(item => {
+                const itemSubtotal = item.price * item.quantity; 
+                subtotal += itemSubtotal; // Calculating the total subtotal amount
+                checkoutTable.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${itemSubtotal.toFixed(2)}</td> <!-- Subtotal for each item -->
+                    </tr>
+                `;
+            });
+
+            const tax = subtotal * 0.165;
+            const total = subtotal + tax - discountAmount; 
+
+            subtotalElement.textContent = subtotal.toFixed(2);
+            taxElement.textContent = tax.toFixed(2);
+            totalElement.textContent = total.toFixed(2);
+            discountElement.textContent = discountAmount.toFixed(2); 
+        }
+
+        function completePurchase() {
+            alert('Thank you for your purchase!');
+            // Clearing the cart and discount after purchase is completed
+            localStorage.removeItem('cart');
+            localStorage.removeItem('discount');
+            window.location.href = 'index.html'; // Redirecting the user to the homepage after purchase is completed
+        }
+
+        // Calculate totals 
+        document.addEventListener('DOMContentLoaded', calculateTotals);
+    </script>
+</body>
+</html>

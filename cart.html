@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Gadgets - Cart</title>
+    <link rel="stylesheet" href="cart.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <section id="header">
+        <i class='bx bx-color' style='color:#962500'></i>
+        <div>
+            <ul id="navbar">
+                <li><a href="product.html">Products</a></li>
+                <li><a href="aboutus.html">About us</a></li>
+                <li><a class="active" href="cart.html"><i class='bx bx-cart'></i></a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="cart">
+        <table id="cart-table">
+            <tr>
+                <th>REMOVE</th>
+                <th>IMAGE</th>
+                <th>PRODUCT</th>
+                <th>PRICE</th>
+                <th>QUANTITY</th>
+                <th>SUBTOTAL</th>
+            </tr>
+        </table>
+
+        <!-- Coupon Section -->
+        <div id="coupon">
+            <h3>Apply Coupon</h3>
+            <p>Use code <strong>new</strong> for a discount on your first purchase</p>
+            <input type="text" id="coupon-code" placeholder="Enter Your Coupon">
+            <button onclick="applyCoupon()">Apply</button>
+        </div>
+
+        <!-- Total Section -->
+        <div id="subtotal">
+            <h3>SubTotal: $<span id="total-price">0</span></h3>
+            <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+        </div>
+    </section>
+    
+    <script>
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartTable = document.getElementById('cart-table');
+        const totalPriceElement = document.getElementById('total-price');
+
+        function updateCart() {
+            cartTable.innerHTML = `
+                <tr>
+                    <th>REMOVE</th>
+                    <th>IMAGE</th>
+                    <th>PRODUCT</th>
+                    <th>PRICE</th>
+                    <th>QUANTITY</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+            `;
+            let total = 0;
+            cartItems.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                cartTable.innerHTML += `
+                    <tr>
+                        <td><button onclick="removeFromCart(${index})"><i class='bx bx-trash'></i></button></td>
+                        <td><img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px;"></td>
+                        <td>${item.name}</td>
+                        <td>$${item.price}</td>
+                        <td><input type="number" value="${item.quantity}" min="1" onchange="changeQuantity(${index}, this.value)"></td>
+                        <td>$${subtotal.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            totalPriceElement.textContent = total.toFixed(2);
+        }
+
+        function addToCart(name, price, image) {
+            const quantity = document.getElementById('quantity').value;
+            const existingItemIndex = cartItems.findIndex(item => item.name === name);
+            if (existingItemIndex !== -1) {
+                cartItems[existingItemIndex].quantity += parseInt(quantity);
+            } else {
+                cartItems.push({ name, price, quantity: parseInt(quantity), image });
+            }
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            alert(`${name} added to cart!`);
+        }
+
+        function removeFromCart(index) {
+            cartItems.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            updateCart();
+        }
+
+        function changeQuantity(index, newQuantity) {
+            cartItems[index].quantity = parseInt(newQuantity);
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            updateCart();
+        }
+
+        function applyCoupon() {
+            const couponCode = document.getElementById('coupon-code').value;
+            if (couponCode === 'new') {
+                const discount = 0.1; // 10% discount
+                let total = parseFloat(totalPriceElement.textContent);
+                const newTotal = total - total * discount;
+                totalPriceElement.textContent = newTotal.toFixed(2);
+                localStorage.setItem('discount', (total * discount).toFixed(2)); // Store the discount in localStorage
+                alert('Coupon applied! 10% discount.');
+            } else {
+                alert('Invalid coupon code.');
+            }
+        }
+
+        function proceedToCheckout() {
+            alert('Proceeding to checkout!');
+            // Redirect to checkout page
+            window.location.href = 'checkout.html';
+        }
+
+        // Load cart on page load
+        document.addEventListener('DOMContentLoaded', updateCart);
+    </script>
+</body>
+</html>
